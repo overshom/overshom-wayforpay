@@ -1,5 +1,7 @@
 set -e
 
+yarn
+
 yarn audit
 
 yarn build
