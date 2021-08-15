@@ -23,7 +23,7 @@
     "build:dev": "tsc --p tsconfig.json",
     "prebuild": "rimraf dist",
     "build": "tsc --p tsconfig.prod.json",
-    "test": "TODO"
+    "test": "echo TODO TESTS"
   },
   "dependencies": {
     "axios": "0.21.1"
