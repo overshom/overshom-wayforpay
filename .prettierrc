@@ -1,0 +1,19 @@
+{
+  "singleQuote": true,
+  "jsxBracketSameLine": true,
+  "semi": true,
+  "trailingComma": "all",
+  "endOfLine": "auto",
+  "bracketSpacing": true,
+  "arrowParens": "avoid",
+  "printWidth": 100,
+  "tabWidth": 4,
+  "overrides": [
+    {
+      "files": ["*.json", ".prettierrc"],
+      "options": {
+        "tabWidth": 2
+      }
+    }
+  ]
+}
