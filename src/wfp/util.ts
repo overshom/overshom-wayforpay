@@ -1,4 +1,5 @@
 import * as crypto from 'crypto';
+import { ErrorCodeMap, SUCCESS_WFP_CODE } from './code-mapping';
 import { WebhookWayforpayDto } from './types/webhook.type';
 
 export const prepareSignedWebhookResponse =
@@ -51,3 +52,33 @@ export const verifyIncomingWebhookOrPanic =
             throw new Error('Corrupted webhook received. Webhook signature is not authentic.');
         }
     };
+
+export const prepareBodyForCurrencyRatesRequest = ({
+    merchantAccount,
+    merchantSecretKey,
+}: {
+    merchantAccount: string;
+    merchantSecretKey: string;
+}) => {
+    const body = {
+        transactionType: 'CURRENCY_RATES',
+        merchantSignature: '',
+        apiVersion: 1,
+        orderDate: Math.floor(Date.now() / 1000),
+        merchantAccount,
+    };
+    const forHash = [body.merchantAccount, body.orderDate].join(';');
+    const hash = crypto.createHmac('md5', merchantSecretKey).update(forHash).digest('hex');
+    body.merchantSignature = hash;
+    return body;
+};
+
+export const validateSuccessResponse = ({ reasonCode }: { reasonCode: number }) => {
+    if (reasonCode !== SUCCESS_WFP_CODE) {
+        const details = ErrorCodeMap.get(reasonCode);
+        if (details) {
+            throw details;
+        }
+        throw new Error(`Unknown error code from WFP: "${reasonCode}"`);
+    }
+};
