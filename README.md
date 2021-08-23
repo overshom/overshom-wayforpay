@@ -34,12 +34,16 @@ export const wfp = new WFP({
 ## Create invoice
 
 ```ts
-const invoice = await wfp.createInvoiceUrl({
+const response = await wfp.createInvoiceUrl({
     orderReference: (Math.random() * 1e17).toString(),
     productName: ['Product title'],
     productCount: [1],
     productPrice: [1],
 });
+if (response.error) {
+    // return nicely handled error
+}
+const invoice = response.value;
 ```
 
 ```ts
@@ -75,4 +79,11 @@ app.post(WAYFORPAY_WEBHOOK_ROUTE, (req, res) => {
     const answer = wfp.prepareSignedWebhookResponse(data);
     res.send(answer);
 });
+```
+
+## Get currency rates
+
+```ts
+const response = await wfp.getCurrencyRates();
+// see response.value for details
 ```
