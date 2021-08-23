@@ -4,7 +4,9 @@ import {
     prepareSignedWebhookResponse,
     parseWithoutVerificationWebhookWayforpayBody,
     verifyIncomingWebhookOrPanic,
+    prepareBodyForCurrencyRatesRequest,
 } from './util';
+import { CurrencyRateSymbol } from './types/currency.type';
 
 export class WFP {
     readonly MERCHANT_ACCOUNT: string;
@@ -54,12 +56,21 @@ export class WFP {
             productCount: props.productCount,
             productPrice: props.productPrice,
         });
-        const { data } = await restApi.post<{
+        const data = await restApi.baseCall<{
             invoiceUrl: string;
-            reason: string;
-            reasonCode: number;
             qrCode: string;
-        }>('', body);
+        }>(body);
+        return data;
+    }
+
+    async getCurrencyRates() {
+        const body = prepareBodyForCurrencyRatesRequest({
+            merchantAccount: this.MERCHANT_ACCOUNT,
+            merchantSecretKey: this.MERCHANT_SECRET_KEY,
+        });
+        const data = await restApi.baseCall<{
+            rates: Record<CurrencyRateSymbol, number>;
+        }>(body);
         return data;
     }
 }
