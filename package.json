@@ -1,6 +1,6 @@
 {
   "name": "overshom-wayforpay",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "author": "Oleksii Shnyra",
   "description": "High Quality TypeScript package for WayForPay payment provider",
   "repository": {
